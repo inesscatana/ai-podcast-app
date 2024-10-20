@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 
 import './globals.css'
 
+import ConvexClerkProvider from './providers/ConvexClerkProvider'
+
 export const metadata: Metadata = {
 	title: 'Podcastr',
 	description: 'Generate your podcasts using AI',
@@ -17,7 +19,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`antialiased`}>{children}</body>
+			<body className={`antialiased`}>
+				<ConvexClerkProvider>{children}</ConvexClerkProvider>
+			</body>
 		</html>
 	)
 }
