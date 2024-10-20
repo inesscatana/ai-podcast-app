@@ -4,7 +4,10 @@ import './globals.css'
 
 export const metadata: Metadata = {
 	title: 'Podcastr',
-	description: 'Software-as-a-Service app with AI-powered features',
+	description: 'Generate your podcasts using AI',
+	icons: {
+		icon: '/icons/logo.svg',
+	},
 }
 
 export default function RootLayout({
