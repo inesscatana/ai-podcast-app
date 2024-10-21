@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import './globals.css'
+import ConvexClerkProvider from '../providers/ConvexClerkProvider'
 
-import ConvexClerkProvider from './providers/ConvexClerkProvider'
+import './globals.css'
 
 export const metadata: Metadata = {
 	title: 'Podcastr',
