@@ -9,7 +9,7 @@
   <br>
 
   <div align="center">
-   Follow along and build this project step by step with our comprehensive tutorial available on the  <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube. channel. 
+   Follow along and build this project step by step with our comprehensive tutorial available on the  <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube channel. 
   </div>
 
   <br>
