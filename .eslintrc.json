@@ -1,3 +1,33 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+	"extends": [
+		"next/core-web-vitals", // Next.js specific linting for core web vitals
+		"next", // Next.js linting rules
+		"next/typescript", // TypeScript linting rules
+		"eslint:recommended", // ESLint recommended rules
+		"plugin:@typescript-eslint/recommended" // TypeScript ESLint plugin recommended rules
+	],
+	"plugins": ["@typescript-eslint"], // Enable TypeScript ESLint plugin
+	"parser": "@typescript-eslint/parser", // Use TypeScript parser for ESLint
+	"parserOptions": {
+		"ecmaVersion": 2020, // Allow modern ECMAScript features
+		"sourceType": "module", // Allow usage of imports
+		"project": "./tsconfig.json" // Point to the TypeScript config
+	},
+	"env": {
+		"browser": true, // Enable browser global variables like `window`
+		"es6": true, // Enable ES6 global variables
+		"node": true // Enable Node.js global variables like `process`
+	},
+	"rules": {
+		// Core rules
+		"no-console": "warn", // Warn when using `console`
+		"no-unused-vars": "off", // Disable as TypeScript has its own rule for this
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{ "argsIgnorePattern": "^_" }
+		], // Warn for unused variables, ignore those starting with _
+		"@typescript-eslint/explicit-function-return-type": "off", // Allow TypeScript to infer return types
+		"@typescript-eslint/no-explicit-any": "warn", // Warn against using `any` type
+		"@typescript-eslint/no-var-requires": "off" // Allow `require()` syntax (for Node.js)
+	}
 }
