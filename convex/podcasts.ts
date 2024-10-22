@@ -1,6 +1,6 @@
 import { ConvexError, v } from 'convex/values'
 
-import { mutation } from './_generated/server'
+import { mutation, query } from './_generated/server'
 
 // create podcast mutation
 export const createPodcast = mutation({
@@ -60,5 +60,14 @@ export const getUrl = mutation({
 	},
 	handler: async (ctx, args) => {
 		return await ctx.storage.getUrl(args.storageId)
+	},
+})
+
+// this query will get the podcasts based on the views of the podcast , which we are showing in the Trending Podcasts section.
+export const getTrendingPodcasts = query({
+	handler: async (ctx) => {
+		const podcast = await ctx.db.query('podcasts').collect()
+
+		return podcast.sort((a, b) => b.views - a.views).slice(0, 8)
 	},
 })
