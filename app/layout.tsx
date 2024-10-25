@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
+import { Manrope } from 'next/font/google'
 
 import ConvexClerkProvider from '../providers/ConvexClerkProvider'
+import AudioProvider from '@/providers/AudioProvider'
 
 import './globals.css'
+
+const manrope = Manrope({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
 	title: 'Podcastr',
@@ -18,10 +22,12 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang="en">
-			<body className={`antialiased`}>
-				<ConvexClerkProvider>{children}</ConvexClerkProvider>
-			</body>
-		</html>
+		<ConvexClerkProvider>
+			<html lang="en">
+				<AudioProvider>
+					<body className={`${manrope.className} antialiased`}>{children}</body>
+				</AudioProvider>
+			</html>
+		</ConvexClerkProvider>
 	)
 }
