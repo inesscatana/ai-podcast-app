@@ -8,7 +8,7 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'https://fast-wren-739.convex.cloud',
+				hostname: 'fast-wren-739.convex.cloud',
 			},
 			{
 				protocol: 'https',
