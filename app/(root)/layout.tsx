@@ -3,6 +3,7 @@ import Image from 'next/image'
 import LeftSidebar from '@/components/LeftSidebar'
 import MobileNav from '@/components/MobileNav'
 import RightSidebar from '@/components/RightSidebar'
+import PodcastPlayer from '@/components/PodcastPlayer'
 
 import { Toaster } from '@/components/ui/toaster'
 
@@ -37,6 +38,7 @@ export default function RootLayout({
 
 				<RightSidebar />
 			</main>
+			<PodcastPlayer />
 		</div>
 	)
 }

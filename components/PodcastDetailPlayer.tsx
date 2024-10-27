@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { useMutation } from 'convex/react'
 import Image from 'next/image'
@@ -11,7 +10,7 @@ import { PodcastDetailPlayerProps } from '@/types'
 
 import LoaderSpinner from './LoaderSpinner'
 import { Button } from './ui/button'
-// import { useToast } from './ui/use-toast'
+import { useToast } from '../hooks/use-toast'
 
 const PodcastDetailPlayer = ({
 	audioUrl,
@@ -27,24 +26,24 @@ const PodcastDetailPlayer = ({
 }: PodcastDetailPlayerProps) => {
 	const router = useRouter()
 	const { setAudio } = useAudio()
-	// const { toast } = useToast()
+	const { toast } = useToast()
 	const [isDeleting, setIsDeleting] = useState(false)
 	const deletePodcast = useMutation(api.podcasts.deletePodcast)
 
 	const handleDelete = async () => {
-		// try {
-		// 	await deletePodcast({ podcastId, imageStorageId, audioStorageId })
-		// 	toast({
-		// 		title: 'Podcast deleted',
-		// 	})
-		// 	router.push('/')
-		// } catch (error) {
-		// 	console.error('Error deleting podcast', error)
-		// 	toast({
-		// 		title: 'Error deleting podcast',
-		// 		variant: 'destructive',
-		// 	})
-		// }
+		try {
+			await deletePodcast({ podcastId, imageStorageId, audioStorageId })
+			toast({
+				title: 'Podcast deleted',
+			})
+			router.push('/')
+		} catch (error) {
+			console.error('Error deleting podcast', error)
+			toast({
+				title: 'Error deleting podcast',
+				variant: 'destructive',
+			})
+		}
 	}
 
 	const handlePlay = () => {
@@ -107,14 +106,16 @@ const PodcastDetailPlayer = ({
 			</div>
 			{isOwner && (
 				<div className="relative mt-2">
-					<Image
-						src="/icons/three-dots.svg"
-						width={20}
-						height={30}
-						alt="Three dots icon"
-						className="cursor-pointer"
-						onClick={() => setIsDeleting((prev) => !prev)}
-					/>
+					<div style={{ width: '20px', height: '20px', position: 'relative' }}>
+						<Image
+							src="/icons/three-dots.svg"
+							alt="Three dots icon"
+							fill
+							style={{ objectFit: 'contain' }}
+							className="cursor-pointer"
+							onClick={() => setIsDeleting((prev) => !prev)}
+						/>
+					</div>
 					{isDeleting && (
 						<div
 							className="absolute -left-32 -top-2 z-10 flex w-32 cursor-pointer justify-center gap-2 rounded-md bg-black-6 py-1.5 hover:bg-black-2"
