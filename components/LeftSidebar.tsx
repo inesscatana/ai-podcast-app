@@ -1,25 +1,27 @@
 'use client'
 
-import { sidebarLinks } from '@/constants'
-import { cn } from '@/lib/utils'
-import { SignedIn, SignedOut, useClerk } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
+
+import { sidebarLinks } from '@/constants'
+import { cn } from '@/lib/utils'
+import { SignedIn, SignedOut, useClerk } from '@clerk/nextjs'
+import { useAudio } from '@/providers/AudioProvider'
+
 import { Button } from './ui/button'
 
 const LeftSidebar = () => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const { signOut } = useClerk()
+	const { audio } = useAudio()
 
 	return (
 		<section
-			className={cn(
-				'left_sidebar h-[calc(100vh-5px)]',
-				'h-[calc(100vh-140px)]'
-			)}
+			className={cn('left_sidebar h-[calc(100vh-5px)]', {
+				'h-[calc(100vh-140px)]': audio?.audioUrl,
+			})}
 		>
 			<nav className="flex flex-col gap-6">
 				<Link
@@ -27,7 +29,7 @@ const LeftSidebar = () => {
 					className="flex cursor-pointer items-center gap-1 pb-10 max-lg:justify-center"
 				>
 					<Image src="/icons/logo.svg" alt="logo" width={23} height={27} />
-					<h1 className="text-24 font-extrabold text-white-1 ml-2 max-lg:hidden">
+					<h1 className="text-24 font-extrabold text-white max-lg:hidden">
 						Podcastr
 					</h1>
 				</Link>

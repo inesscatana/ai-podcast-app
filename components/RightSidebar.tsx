@@ -3,27 +3,31 @@
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { SignedIn, UserButton, useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
+import { SignedIn, UserButton, useUser } from '@clerk/nextjs'
 
 import Header from './Header'
 import Carousel from './Carousel'
 
 import { api } from '@/convex/_generated/api'
+import { useAudio } from '@/providers/AudioProvider'
 
 import { cn } from '@/lib/utils'
+import LoaderSpinner from './LoaderSpinner'
 
 const RightSidebar = () => {
 	const { user } = useUser()
 	const topPodcasters = useQuery(api.users.getTopUserByPodcastCount)
 	const router = useRouter()
 
+	const { audio } = useAudio()
+	if (!topPodcasters) return <LoaderSpinner />
+
 	return (
 		<section
-			className={cn(
-				'right_sidebar h-[calc(100vh-5px)]',
-				'h-[calc(100vh-140px)]'
-			)}
+			className={cn('right_sidebar h-[calc(100vh-5px)]', {
+				'h-[calc(100vh-140px)]': audio?.audioUrl,
+			})}
 		>
 			<SignedIn>
 				<Link href={`/profile/${user?.id}`} className="flex gap-3 pb-12">
