@@ -1,6 +1,6 @@
 import { ConvexError, v } from 'convex/values'
 
-import { internalMutation, query } from './_generated/server'
+import { internalMutation, mutation, query } from './_generated/server'
 
 export const getUserById = query({
 	args: { clerkId: v.string() },
@@ -62,6 +62,30 @@ export const createUser = internalMutation({
 			imageUrl: args.imageUrl,
 			name: args.name,
 		})
+	},
+})
+
+export const addUserIfNotExists = mutation({
+	args: {
+		clerkId: v.string(),
+		email: v.string(),
+		imageUrl: v.string(),
+		name: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const existingUser = await ctx.db
+			.query('users')
+			.filter((q) => q.eq(q.field('email'), args.email))
+			.first()
+
+		if (!existingUser) {
+			await ctx.db.insert('users', {
+				clerkId: args.clerkId,
+				email: args.email,
+				imageUrl: args.imageUrl,
+				name: args.name,
+			})
+		}
 	},
 })
 

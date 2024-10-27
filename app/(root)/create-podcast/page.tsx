@@ -8,6 +8,7 @@ import { Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMutation } from 'convex/react'
+import { useUser } from '@clerk/nextjs'
 
 import {
 	Form,
@@ -46,26 +47,24 @@ const formSchema = z.object({
 
 const CreatePodcast = () => {
 	const router = useRouter()
+	const { toast } = useToast()
+	const { user } = useUser()
+	const createPodcast = useMutation(api.podcasts.createPodcast)
+	const addUserIfNotExists = useMutation(api.users.addUserIfNotExists)
+
 	const [imagePrompt, setImagePrompt] = useState('')
 	const [imageStorageId, setImageStorageId] = useState<Id<'_storage'> | null>(
 		null
 	)
 	const [imageUrl, setImageUrl] = useState('')
-
 	const [audioUrl, setAudioUrl] = useState('')
 	const [audioStorageId, setAudioStorageId] = useState<Id<'_storage'> | null>(
 		null
 	)
 	const [audioDuration, setAudioDuration] = useState(0)
-
 	const [voiceType, setVoiceType] = useState<string | null>(null)
 	const [voicePrompt, setVoicePrompt] = useState('')
-
 	const [isSubmitting, setIsSubmitting] = useState(false)
-
-	const createPodcast = useMutation(api.podcasts.createPodcast)
-
-	const { toast } = useToast()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -75,16 +74,30 @@ const CreatePodcast = () => {
 		},
 	})
 
+	async function ensureUserExists(user: any) {
+		if (user) {
+			await addUserIfNotExists({
+				email: user.primaryEmailAddress?.emailAddress!,
+				name: user.fullName,
+				imageUrl: user.profileImageUrl,
+				clerkId: user.id,
+			})
+		} else {
+			throw new Error('User not authenticated')
+		}
+	}
+
 	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			setIsSubmitting(true)
+
 			if (!audioUrl || !imageUrl || !voiceType) {
-				toast({
-					title: 'Please generate audio and image',
-				})
+				toast({ title: 'Please generate audio and image' })
 				setIsSubmitting(false)
 				throw new Error('Please generate audio and image')
 			}
+
+			await ensureUserExists(user)
 
 			const podcast = await createPodcast({
 				podcastTitle: data.podcastTitle,
@@ -99,21 +112,21 @@ const CreatePodcast = () => {
 				audioStorageId: audioStorageId!,
 				imageStorageId: imageStorageId!,
 			})
+
 			toast({ title: 'Podcast created' })
 			setIsSubmitting(false)
 			router.push('/')
 		} catch (error) {
 			console.log(error)
-			toast({
-				title: 'Error',
-				variant: 'destructive',
-			})
+			toast({ title: 'Error', variant: 'destructive' })
 			setIsSubmitting(false)
 		}
 	}
+
 	return (
 		<section className="mt-10 flex flex-col">
 			<h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
+
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
@@ -126,20 +139,20 @@ const CreatePodcast = () => {
 							render={({ field }) => (
 								<FormItem className="flex flex-col gap-2.5">
 									<FormLabel className="text-16 font-bold text-white-1">
-										Username
+										Title
 									</FormLabel>
 									<FormControl>
 										<Input
-											className="input-class focus-visible:ring-orange-1"
+											className="input-class focus-visible:ring-offset-orange-1"
 											placeholder="Catana Podcast"
 											{...field}
 										/>
 									</FormControl>
-
 									<FormMessage className="text-white-1" />
 								</FormItem>
 							)}
 						/>
+
 						<div className="flex flex-col gap-2.5">
 							<Label className="text-16 font-bold text-white-1">
 								Select AI Voice
@@ -148,12 +161,12 @@ const CreatePodcast = () => {
 							<Select onValueChange={(value) => setVoiceType(value)}>
 								<SelectTrigger
 									className={cn(
-										'text-16 w-full border-none bg-black-1 text-gray-1'
+										'text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-orange-1'
 									)}
 								>
 									<SelectValue
 										placeholder="Select AI Voice"
-										className="placeholder:text-gray-1"
+										className="placeholder:text-gray-1 "
 									/>
 								</SelectTrigger>
 								<SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-1">
@@ -176,6 +189,7 @@ const CreatePodcast = () => {
 								)}
 							</Select>
 						</div>
+
 						<FormField
 							control={form.control}
 							name="podcastDescription"
@@ -186,12 +200,11 @@ const CreatePodcast = () => {
 									</FormLabel>
 									<FormControl>
 										<Textarea
-											className="input-class focus-visible:ring-orange-1"
+											className="input-class focus-visible:ring-offset-orange-1"
 											placeholder="Write a short podcast description"
 											{...field}
 										/>
 									</FormControl>
-
 									<FormMessage className="text-white-1" />
 								</FormItem>
 							)}
