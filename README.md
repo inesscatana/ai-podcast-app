@@ -3,7 +3,7 @@
   <h3 align="center">AI Podcast Platform</h3>
 
    <div align="center">
-   Software-as-a-Service app with AI-powered features like text-to-multiple-voices functionality and AI-generated images with Next.js 14 and Convex.
+   Create a cutting-edge Software-as-a-Service (SaaS) application featuring AI-powered capabilities such as text-to-multiple-voices functionality and AI-generated images. Leverage the power of Next.js 14 and Convex to build this innovative project.
   </div>
 
   <br>
