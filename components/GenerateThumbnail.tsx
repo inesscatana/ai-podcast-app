@@ -42,7 +42,6 @@ const GenerateThumbnail = ({
 
 		try {
 			const file = new File([blob], fileName, { type: 'image/png' })
-
 			const uploaded = await startUpload([file])
 			const storageId = (uploaded[0].response as any).storageId
 
@@ -50,16 +49,17 @@ const GenerateThumbnail = ({
 
 			const imageUrl = await getImageUrl({ storageId })
 			setImage(imageUrl!)
-			setIsImageLoading(false)
-			toast({
-				title: 'Thumbnail generated successfully',
-			})
+			toast({ title: 'Thumbnail generated successfully' })
 		} catch (error) {
-			console.log(error)
+			console.log('Error uploading image', error)
+			toast({ title: 'Error uploading image', variant: 'destructive' })
+		} finally {
+			setIsImageLoading(false)
 		}
 	}
 
 	const generateImage = async () => {
+		setIsImageLoading(true)
 		try {
 			const response = await handleGenerateThumbnail({ prompt: imagePrompt })
 			const blob = new Blob([response], { type: 'image/png' })
@@ -67,11 +67,14 @@ const GenerateThumbnail = ({
 		} catch (error) {
 			console.log(error)
 			toast({ title: 'Error generating thumbnail', variant: 'destructive' })
+		} finally {
+			setIsImageLoading(false)
 		}
 	}
 
 	const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault()
+		setIsImageLoading(true)
 
 		try {
 			const files = e.target.files
@@ -83,6 +86,8 @@ const GenerateThumbnail = ({
 		} catch (error) {
 			console.log(error)
 			toast({ title: 'Error uploading image', variant: 'destructive' })
+		} finally {
+			setIsImageLoading(false)
 		}
 	}
 
@@ -93,9 +98,7 @@ const GenerateThumbnail = ({
 					type="button"
 					variant="plain"
 					onClick={() => setIsAiThumbnail(true)}
-					className={cn('', {
-						'bg-black-6': isAiThumbnail,
-					})}
+					className={cn('', { 'bg-black-6': isAiThumbnail })}
 				>
 					Use AI to generate thumbnail
 				</Button>
@@ -103,9 +106,7 @@ const GenerateThumbnail = ({
 					type="button"
 					variant="plain"
 					onClick={() => setIsAiThumbnail(false)}
-					className={cn('', {
-						'bg-black-6': !isAiThumbnail,
-					})}
+					className={cn('', { 'bg-black-6': !isAiThumbnail })}
 				>
 					Upload custom image
 				</Button>
@@ -126,9 +127,10 @@ const GenerateThumbnail = ({
 					</div>
 					<div className="w-full max-w-[200px]">
 						<Button
-							type="submit"
+							type="button"
 							className="text-16 bg-orange-1 py-4 font-bold text-white-1"
 							onClick={generateImage}
+							disabled={isImageLoading}
 						>
 							{isImageLoading ? (
 								<>

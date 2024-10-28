@@ -65,6 +65,7 @@ const CreatePodcast = () => {
 	const [voiceType, setVoiceType] = useState<string | null>(null)
 	const [voicePrompt, setVoicePrompt] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [isGenerating, setIsGenerating] = useState(false)
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -79,7 +80,7 @@ const CreatePodcast = () => {
 			await addUserIfNotExists({
 				email: user.primaryEmailAddress?.emailAddress!,
 				name: user.fullName,
-				imageUrl: user.profileImageUrl,
+				imageUrl: user.profileImageUrl || '',
 				clerkId: user.id,
 			})
 		} else {
@@ -94,7 +95,7 @@ const CreatePodcast = () => {
 			if (!audioUrl || !imageUrl || !voiceType) {
 				toast({ title: 'Please generate audio and image' })
 				setIsSubmitting(false)
-				throw new Error('Please generate audio and image')
+				return
 			}
 
 			await ensureUserExists(user)
@@ -114,11 +115,11 @@ const CreatePodcast = () => {
 			})
 
 			toast({ title: 'Podcast created' })
-			setIsSubmitting(false)
 			router.push('/')
 		} catch (error) {
 			console.log(error)
 			toast({ title: 'Error', variant: 'destructive' })
+		} finally {
 			setIsSubmitting(false)
 		}
 	}
@@ -144,7 +145,7 @@ const CreatePodcast = () => {
 									<FormControl>
 										<Input
 											className="input-class focus-visible:ring-offset-orange-1"
-											placeholder="Catana Podcast"
+											placeholder="Podcast Title"
 											{...field}
 										/>
 									</FormControl>
@@ -219,6 +220,8 @@ const CreatePodcast = () => {
 							voicePrompt={voicePrompt}
 							setVoicePrompt={setVoicePrompt}
 							setAudioDuration={setAudioDuration}
+							isGenerating={isGenerating}
+							setIsGenerating={setIsGenerating}
 						/>
 
 						<GenerateThumbnail
@@ -233,6 +236,7 @@ const CreatePodcast = () => {
 							<Button
 								type="submit"
 								className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+								disabled={isGenerating || isSubmitting}
 							>
 								{isSubmitting ? (
 									<>
