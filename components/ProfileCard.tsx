@@ -46,16 +46,21 @@ const ProfileCard = ({
 				height={250}
 				alt="Podcaster"
 				className="aspect-square rounded-lg"
+				priority
 			/>
 			<div className="flex flex-col justify-center max-md:items-center">
 				<div className="flex flex-col gap-2.5">
 					<figure className="flex gap-2 max-md:justify-center">
-						<Image
-							src="/icons/verified.svg"
-							width={15}
-							height={15}
-							alt="verified"
-						/>
+						<div
+							style={{ width: '15px', height: '15px', position: 'relative' }}
+						>
+							<Image
+								src="/icons/verified.svg"
+								alt="Verified"
+								fill
+								style={{ objectFit: 'contain' }}
+							/>
+						</div>
 						<h2 className="text-14 font-medium text-white-2">
 							Verified Creator
 						</h2>

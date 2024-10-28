@@ -150,12 +150,16 @@ const GenerateThumbnail = ({
 						onChange={(e) => uploadImage(e)}
 					/>
 					{!isImageLoading ? (
-						<Image
-							src="/icons/upload-image.svg"
-							width={40}
-							height={40}
-							alt="upload"
-						/>
+						<div
+							style={{ width: '40px', height: '40px', position: 'relative' }}
+						>
+							<Image
+								src="/icons/upload-image.svg"
+								alt="Upload"
+								fill
+								style={{ objectFit: 'contain' }}
+							/>
+						</div>
 					) : (
 						<div className="text-16 flex-center font-medium text-white-1">
 							Uploading

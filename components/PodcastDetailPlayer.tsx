@@ -67,6 +67,7 @@ const PodcastDetailPlayer = ({
 					height={250}
 					alt="Podcast image"
 					className="aspect-square rounded-lg"
+					priority
 				/>
 				<div className="flex w-full flex-col gap-5 max-md:items-center md:gap-9">
 					<article className="flex flex-col gap-2 max-md:items-center">

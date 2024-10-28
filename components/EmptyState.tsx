@@ -13,12 +13,14 @@ const EmptyState = ({
 }: EmptyStateProps) => {
 	return (
 		<section className="flex-center size-full flex-col gap-3">
-			<Image
-				src="/icons/emptyState.svg"
-				width={250}
-				height={250}
-				alt="empty state"
-			/>
+			<div style={{ width: '250px', height: '250px', position: 'relative' }}>
+				<Image
+					src="/icons/emptyState.svg"
+					alt="Empty state"
+					fill
+					style={{ objectFit: 'contain' }}
+				/>
+			</div>
 			<div className="flex-center w-full max-w-[254px] flex-col gap-3">
 				<h1 className="text-16 text-center font-medium text-white-1">
 					{title}
@@ -31,12 +33,17 @@ const EmptyState = ({
 				{buttonLink && (
 					<Button className="bg-orange-1">
 						<Link href={buttonLink} className="gap-1 flex">
-							<Image
-								src="/icons/discover.svg"
-								width={20}
-								height={20}
-								alt="discover"
-							/>
+							<div
+								style={{ width: '20px', height: '20px', position: 'relative' }}
+							>
+								<Image
+									src="/icons/discover.svg"
+									alt="Discover icon"
+									fill
+									style={{ objectFit: 'contain' }}
+								/>
+							</div>
+
 							<h1 className="text-16 font-extrabold text-white-1">
 								{buttonText}
 							</h1>

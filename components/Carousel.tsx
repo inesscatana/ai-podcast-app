@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { EmblaCarouselType } from 'embla-carousel'
 
 import { DotButton, useDotButton } from './EmblaCarouselDotButton'
@@ -51,12 +51,19 @@ const EmblaCarousel = ({ fansLikeDetail }: CarouselProps) => {
 							router.push(`/podcasts/${item.podcast[0]?.podcastId}`)
 						}
 					>
-						<Image
-							src={item.imageUrl}
-							alt="card"
-							fill
-							className="absolute size-full rounded-xl border-none"
-						/>
+						<div
+							style={{ width: '100%', height: '200px', position: 'relative' }}
+						>
+							<Image
+								src={item.imageUrl}
+								alt="card"
+								fill
+								className="absolute size-full rounded-xl border-none"
+								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+								style={{ objectFit: 'cover' }}
+							/>
+						</div>
+
 						<div className="glassmorphism-black relative z-10 flex flex-col rounded-b-xl p-4">
 							<h2 className="text-14 font-semibold text-white-1">
 								{item.podcast[0]?.podcastTitle}
