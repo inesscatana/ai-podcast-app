@@ -47,6 +47,10 @@ const PodcastDetails = ({
 			<PodcastDetailPlayer
 				isOwner={isOwner}
 				podcastId={podcast._id}
+				audioUrl={podcast.audioUrl || ''}
+				imageUrl={podcast.imageUrl || ''}
+				imageStorageId={podcast.imageStorageId || ('' as Id<'_storage'>)}
+				audioStorageId={podcast.audioStorageId || ('' as Id<'_storage'>)}
 				{...podcast}
 			/>
 

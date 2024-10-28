@@ -125,7 +125,16 @@ export const getPodcastByAuthorId = query({
 			0
 		)
 
-		return { podcasts, listeners: totalListeners }
+		const podcastsFormatted = podcasts.map((podcast) => ({
+			...podcast,
+			audioUrl: podcast.audioUrl ?? null,
+			imageUrl: podcast.imageUrl ?? null,
+			audioStorageId: podcast.audioStorageId ?? null,
+			imageStorageId: podcast.imageStorageId ?? null,
+			imagePrompt: podcast.imagePrompt ?? null,
+		}))
+
+		return { podcasts: podcastsFormatted, listeners: totalListeners }
 	},
 })
 
@@ -159,12 +168,19 @@ export const getPodcastBySearch = query({
 			return titleSearch
 		}
 
-		return await ctx.db
+		const descriptionSearch = await ctx.db
 			.query('podcasts')
 			.withSearchIndex('search_body', (q) =>
-				q.search('podcastDescription' || 'podcastTitle', args.search)
+				q.search('podcastDescription', args.search)
 			)
 			.take(10)
+
+		if (descriptionSearch.length > 0) {
+			return descriptionSearch
+		}
+
+		// If no results are found, return an empty array or other fallback
+		return []
 	},
 })
 
