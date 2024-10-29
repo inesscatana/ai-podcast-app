@@ -8,7 +8,6 @@ import { Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMutation } from 'convex/react'
-import { useUser } from '@clerk/nextjs'
 
 import {
 	Form,
@@ -48,9 +47,8 @@ const formSchema = z.object({
 const CreatePodcast = () => {
 	const router = useRouter()
 	const { toast } = useToast()
-	const { user } = useUser()
+
 	const createPodcast = useMutation(api.podcasts.createPodcast)
-	const addUserIfNotExists = useMutation(api.users.addUserIfNotExists)
 
 	const [imagePrompt, setImagePrompt] = useState('')
 	const [imageStorageId, setImageStorageId] = useState<Id<'_storage'> | null>(
@@ -75,19 +73,6 @@ const CreatePodcast = () => {
 		},
 	})
 
-	async function ensureUserExists(user: any) {
-		if (user) {
-			await addUserIfNotExists({
-				email: user.primaryEmailAddress?.emailAddress!,
-				name: user.fullName,
-				imageUrl: user.profileImageUrl || '',
-				clerkId: user.id,
-			})
-		} else {
-			throw new Error('User not authenticated')
-		}
-	}
-
 	async function onSubmit(data: z.infer<typeof formSchema>) {
 		try {
 			setIsSubmitting(true)
@@ -97,8 +82,6 @@ const CreatePodcast = () => {
 				setIsSubmitting(false)
 				return
 			}
-
-			await ensureUserExists(user)
 
 			const podcast = await createPodcast({
 				podcastTitle: data.podcastTitle,
