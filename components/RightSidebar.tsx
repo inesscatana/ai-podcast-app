@@ -12,7 +12,7 @@ import Carousel from './Carousel'
 import { api } from '@/convex/_generated/api'
 import { useAudio } from '@/providers/AudioProvider'
 
-import { cn } from '@/lib/utils'
+import { cn, getPodcastLabel } from '@/lib/utils'
 import LoaderSpinner from './LoaderSpinner'
 
 const RightSidebar = () => {
@@ -73,7 +73,7 @@ const RightSidebar = () => {
 							</figure>
 							<div className="flex items-center">
 								<p className="text-12 font-normal text-white-1">
-									{podcaster.totalPodcasts} podcasts
+									{getPodcastLabel(podcaster.totalPodcasts)}
 								</p>
 							</div>
 						</div>
