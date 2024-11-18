@@ -12,14 +12,12 @@ export function useEnsureUserExists() {
 	useEffect(() => {
 		async function ensureUserExists() {
 			if (isSignedIn && user) {
-				console.log('Checking if user exists in Convex')
 				await addUserIfNotExists({
 					email: user.primaryEmailAddress?.emailAddress || '',
 					name: user.fullName || '',
 					imageUrl: user.imageUrl || '',
 					clerkId: user.id,
 				})
-				console.log('User check/insert completed')
 			}
 		}
 		ensureUserExists()
