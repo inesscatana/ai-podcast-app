@@ -6,28 +6,29 @@
 		"eslint:recommended", // ESLint recommended rules
 		"plugin:@typescript-eslint/recommended" // TypeScript ESLint plugin recommended rules
 	],
-	"plugins": ["@typescript-eslint"], // Enable TypeScript ESLint plugin
-	"parser": "@typescript-eslint/parser", // Use TypeScript parser for ESLint
+	"ignorePatterns": ["next.config.mjs"], // Ignores `next.config.mjs` from linting
+	"plugins": ["@typescript-eslint"], // Enables TypeScript ESLint plugin
+	"parser": "@typescript-eslint/parser", // Uses TypeScript parser for ESLint
 	"parserOptions": {
-		"ecmaVersion": 2020, // Allow modern ECMAScript features
-		"sourceType": "module", // Allow usage of imports
-		"project": "./tsconfig.json" // Point to the TypeScript config
+		"ecmaVersion": 2020, // Allows modern ECMAScript features
+		"sourceType": "module", // Allows usage of imports
+		"project": "./tsconfig.json" // Points to the TypeScript config
 	},
 	"env": {
-		"browser": true, // Enable browser global variables like `window`
-		"es6": true, // Enable ES6 global variables
-		"node": true // Enable Node.js global variables like `process`
+		"browser": true, // Enables browser global variables like `window`
+		"es6": true, // Enables ES6 global variables
+		"node": true // Enables Node.js global variables like `process`
 	},
 	"rules": {
 		// Core rules
-		"no-console": "warn", // Warn when using `console`
-		"no-unused-vars": "off", // Disable as TypeScript has its own rule for this
+		"no-console": "warn", // Warns when using `console`
+		"no-unused-vars": "off", // Disables base rule, as TypeScript has its own rule
 		"@typescript-eslint/no-unused-vars": [
 			"warn",
-			{ "argsIgnorePattern": "^_" }
-		], // Warn for unused variables, ignore those starting with _
-		"@typescript-eslint/explicit-function-return-type": "off", // Allow TypeScript to infer return types
-		"@typescript-eslint/no-explicit-any": "warn", // Warn against using `any` type
-		"@typescript-eslint/no-var-requires": "off" // Allow `require()` syntax (for Node.js)
+			{ "argsIgnorePattern": "^_" } // Ignores unused variables starting with `_`
+		],
+		"@typescript-eslint/explicit-function-return-type": "off", // Allows inferred return types
+		"@typescript-eslint/no-explicit-any": "warn", // Warns against using `any` type
+		"@typescript-eslint/no-var-requires": "off" // Allows `require()` syntax for Node.js compatibility
 	}
 }
